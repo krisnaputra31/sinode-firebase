@@ -14,6 +14,8 @@ function App() {
     <Provider store={store}>
       <Container fluid className="register">
         <Routes>
+          {/* {console.log(store.getState())} */}
+          {/* {store.getState().isLogin ? <Route path="/" element={<Dashboard />} exact /> : <Route path="/login" element={<Login />} />} */}
           <Route path="/" element={<Dashboard />} exact />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

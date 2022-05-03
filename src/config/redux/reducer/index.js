@@ -3,7 +3,8 @@ const initialState = {
   isLogin: false,
   isLoading: false,
   errorMessage: "",
-  user: " JJ",
+  user: {},
+  notes: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,6 +24,24 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       user: action.value,
+    };
+  }
+  if (action.type === "CHANGE_IS_LOGIN") {
+    return {
+      ...state,
+      isLogin: action.value,
+    };
+  }
+  if (action.type === "CHANGE_USER") {
+    return {
+      ...state,
+      user: action.value,
+    };
+  }
+  if (action.type === "SET_NOTES") {
+    return {
+      ...state,
+      notes: action.value,
     };
   }
   return state;
