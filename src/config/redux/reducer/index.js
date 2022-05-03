@@ -2,21 +2,27 @@ const initialState = {
   popup: false,
   isLogin: false,
   isLoading: false,
-  errorMessage: "default",
-  user: "JJ",
+  errorMessage: "",
+  user: " JJ",
 };
 
 const reducer = (state = initialState, action) => {
-  if (reducer.type === "CHANGE_ERROR_MESSAGE") {
+  if (action.type === "CHANGE_ERROR_MESSAGE") {
     return {
       ...state,
       errorMessage: action.value,
     };
   }
-  if (reducer.type === "CHANGE_LOADING") {
+  if (action.type === "CHANGE_LOADING") {
     return {
       ...state,
       isLoading: action.value,
+    };
+  }
+  if (action.type === "CHANGE_USERNAME") {
+    return {
+      ...state,
+      user: action.value,
     };
   }
   return state;
