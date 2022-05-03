@@ -1,5 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, onValue, push, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import app from "../../firebase";
 
 export const changeUser = () => (dispatch) => {
@@ -83,5 +83,23 @@ export const getDataFromApi = (uid) => (dispatch) => {
       });
       dispatch({ type: "SET_NOTES", value: data });
     });
+  });
+};
+
+export const putDataToApi = (data) => (dispatch) => {
+  const db = getDatabase();
+  const starCountRef = ref(db, "notes/" + data.userId + "/" + data.noteId);
+  return new Promise((resolve, reject) => {
+    set(starCountRef, {
+      title: data.title,
+      content: data.content,
+      date: data.date,
+    })
+      .then(() => {
+        resolve(true);
+      })
+      .catch((error) => {
+        reject(false);
+      });
   });
 };

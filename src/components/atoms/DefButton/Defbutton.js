@@ -11,7 +11,7 @@ const DefButton = ({ title, onClick, loading }) => {
     );
   }
   return (
-    <Button variant="primary" type="submit" onClick={onClick}>
+    <Button variant="primary" type="submit" onClick={onClick} className="mx-5">
       {title}
     </Button>
   );

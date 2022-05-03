@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { Card, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import DefButton from "../../../components/atoms/DefButton/Defbutton";
-import { addDataToAPI, getDataFromApi } from "../../../config/redux/action/action";
+import { addDataToAPI, getDataFromApi, putDataToApi } from "../../../config/redux/action/action";
 import "./index.css";
 
 class Dashboard extends React.Component {
@@ -10,12 +10,14 @@ class Dashboard extends React.Component {
     title: "",
     content: "",
     date: "",
+    textButton: "Save",
+    noteId: "",
   };
 
   handleSavedNotes = (e) => {
     e.preventDefault();
-    const { title, content } = this.state;
-    const { saveNotes } = this.props;
+    const { title, content, textButton, noteId } = this.state;
+    const { saveNotes, changeNotes } = this.props;
     const { uid } = JSON.parse(localStorage.getItem("userData"));
     const data = {
       title,
@@ -23,7 +25,12 @@ class Dashboard extends React.Component {
       date: new Date().getTime(),
       userId: uid,
     };
-    saveNotes(data);
+    if (textButton === "Save") {
+      saveNotes(data);
+    } else {
+      data.noteId = noteId;
+      changeNotes(data);
+    }
   };
 
   onInputChange = (e, type) => {
@@ -41,13 +48,24 @@ class Dashboard extends React.Component {
     this.setState({
       title: note.data.title,
       content: note.data.content,
+      textButton: "Change",
+      noteId: note.id,
+    });
+  };
+
+  cancelUpdate = (e) => {
+    e.preventDefault();
+    this.setState({
+      title: "",
+      content: "",
+      textButton: "Save",
     });
   };
 
   render() {
-    const { title, content } = this.state;
+    const { title, content, textButton } = this.state;
     const { notes } = this.props;
-    const { updateNote, onInputChange, handleSavedNotes } = this;
+    const { updateNote, onInputChange, handleSavedNotes, cancelUpdate } = this;
     return (
       <Fragment>
         <Container>
@@ -62,7 +80,12 @@ class Dashboard extends React.Component {
                   <Form.Label>textarea</Form.Label>
                   <Form.Control as="textarea" rows={3} value={content} onChange={(e) => onInputChange(e, "content")} />
                 </Form.Group>
-                <DefButton title="Save" loading={false} onClick={(e) => handleSavedNotes(e)} />
+                <DefButton title={textButton} loading={false} onClick={(e) => handleSavedNotes(e)} />
+                {textButton === "Change" ? (
+                  <Button variant="warning" type="submit" onClick={(e) => cancelUpdate(e)} className="mx-auto">
+                    Cancel
+                  </Button>
+                ) : null}
               </Form>
             </Col>
           </Row>
@@ -111,6 +134,7 @@ const reduxState = (state) => ({
 const reduxDispatch = (dispatch) => ({
   saveNotes: (data) => dispatch(addDataToAPI(data)),
   getNotes: (data) => dispatch(getDataFromApi(data)),
+  changeNotes: (data) => dispatch(putDataToApi(data)),
 });
 
 export default connect(reduxState, reduxDispatch)(Dashboard);
