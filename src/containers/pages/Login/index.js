@@ -1,7 +1,18 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const Login = () => {
-  return <div>Login</div>;
-};
+class Login extends React.Component {
+  render() {
+    return (
+      <>
+        <div>Login Pages{this.props.popupProps}</div>
+      </>
+    );
+  }
+}
 
-export default Login;
+const reduxState = (state) => ({
+  popupProps: state.popup,
+});
+
+export default connect(reduxState, null)(Login);

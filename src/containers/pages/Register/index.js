@@ -1,19 +1,18 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import React, { Fragment } from "react";
+import DefButton from "../../../components/atoms/DefButton/Defbutton";
 
-// firebase
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import app from "../../../config/firebase";
+// redux
+import { connect } from "react-redux";
+import { registerUserAPI } from "../../../config/redux/action/action";
 
 class Register extends React.Component {
   state = {
     email: "",
     password: "",
-    errorMessage: "",
   };
 
   handleChangeText = (e) => {
-    console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -22,21 +21,8 @@ class Register extends React.Component {
   handleRegisterSubmit = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-
-    // Initialize Firebase Authentication and get a reference to the service
-    const auth = getAuth(app);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        this.setState({
-          errorMessage: errorMessage.split(" ").slice(1, -1).join(" "),
-        });
-      });
+    this.props.registerUserAPI({ email, password });
+    console.log(this.props.errorMessage);
   };
 
   render() {
@@ -56,12 +42,13 @@ class Register extends React.Component {
                   <Form.Label>Password</Form.Label>
                   <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleChangeText} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Label>{this.state.errorMessage}</Form.Label>
+                <Form.Group controlId="formBasicCheckbox">
+                  <Form.Label>{this.props.errorMessage}</Form.Label>
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={this.handleRegisterSubmit}>
-                  Submit
-                </Button>
+                {/* <Button variant="primary" type="submit" onClick={this.handleRegisterSubmit}>
+                    Submit
+                  </Button> */}
+                <DefButton onClick={this.handleRegisterSubmit} title="Submit" loading={this.props.isLoading} />
               </Form>
             </Col>
           </Row>
@@ -71,4 +58,13 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const reduxState = (state) => ({
+  isLoading: state.isLoading,
+  errorMessage: state.errorMessage,
+});
+
+const reduxDispatch = (dispatch) => ({
+  registerUserAPI: (data) => dispatch(registerUserAPI(data)),
+});
+
+export default connect(reduxState, reduxDispatch)(Register);

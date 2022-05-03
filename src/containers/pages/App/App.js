@@ -5,15 +5,21 @@ import Dashboard from "../Dashboard";
 import Login from "../Login";
 import "./App.css";
 
+// redux
+import { store } from "../../../config/redux";
+import { Provider } from "react-redux";
+
 function App() {
   return (
-    <Container fluid className="register">
-      <Routes>
-        <Route path="/" element={<Dashboard />} exact />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Container>
+    <Provider store={store}>
+      <Container fluid className="register">
+        <Routes>
+          <Route path="/" element={<Dashboard />} exact />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Container>
+    </Provider>
   );
 }
 
