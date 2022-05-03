@@ -1,5 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import app from "../../firebase";
 
 export const changeUser = () => (dispatch) => {
@@ -101,5 +101,13 @@ export const putDataToApi = (data) => (dispatch) => {
       .catch((error) => {
         reject(false);
       });
+  });
+};
+
+export const deleteDataFromApi = (data) => (dispatch) => {
+  const db = getDatabase();
+  const starCountRef = ref(db, "notes/" + data.userId + "/" + data.noteId);
+  return new Promise((resolve, reject) => {
+    remove(starCountRef);
   });
 };

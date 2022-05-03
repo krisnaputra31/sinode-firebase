@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import DefButton from "../../../components/atoms/DefButton/Defbutton";
-import { addDataToAPI, getDataFromApi, putDataToApi } from "../../../config/redux/action/action";
+import { addDataToAPI, deleteDataFromApi, getDataFromApi, putDataToApi } from "../../../config/redux/action/action";
 import "./index.css";
 
 class Dashboard extends React.Component {
@@ -62,10 +62,20 @@ class Dashboard extends React.Component {
     });
   };
 
+  deleteNote = (e, note) => {
+    e.stopPropagation();
+    const { uid } = JSON.parse(localStorage.getItem("userData"));
+    const data = {
+      userId: uid,
+      noteId: note.id,
+    };
+    this.props.deleteNote(data);
+  };
+
   render() {
     const { title, content, textButton } = this.state;
     const { notes } = this.props;
-    const { updateNote, onInputChange, handleSavedNotes, cancelUpdate } = this;
+    const { updateNote, onInputChange, handleSavedNotes, cancelUpdate, deleteNote } = this;
     return (
       <Fragment>
         <Container>
@@ -101,6 +111,9 @@ class Dashboard extends React.Component {
                           <Card.Title>{note.data.title}</Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">{new Date(note.data.date).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</Card.Subtitle>
                           <Card.Text>{note.data.content}</Card.Text>
+                          <Button variant="danger" onClick={(e) => deleteNote(e, note)}>
+                            Delete
+                          </Button>
                         </Card.Body>
                       </Card>
                     </Col>
@@ -135,6 +148,7 @@ const reduxDispatch = (dispatch) => ({
   saveNotes: (data) => dispatch(addDataToAPI(data)),
   getNotes: (data) => dispatch(getDataFromApi(data)),
   changeNotes: (data) => dispatch(putDataToApi(data)),
+  deleteNote: (data) => dispatch(deleteDataFromApi(data)),
 });
 
 export default connect(reduxState, reduxDispatch)(Dashboard);
