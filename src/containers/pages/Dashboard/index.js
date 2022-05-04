@@ -73,6 +73,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
+    localStorage.setItem("userData", JSON.stringify({ uid: "string" }));
     const { title, content, textButton } = this.state;
     const { notes } = this.props;
     const { updateNote, onInputChange, handleSavedNotes, cancelUpdate, deleteNote } = this;

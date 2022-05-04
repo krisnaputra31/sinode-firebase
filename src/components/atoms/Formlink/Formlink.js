@@ -7,7 +7,7 @@ const Formlink = ({ isSuccess }) => {
     return (
       <Form.Label className="mx-4 mt-3 p-2 text-success bg-dark rounded">
         Click Here if web not redirect
-        <Link to="/"> Dashboard</Link>
+        <Link to="/dashboard"> Dashboard</Link>
       </Form.Label>
     );
   }

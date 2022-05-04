@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Register from "../Register";
 import Dashboard from "../Dashboard";
 import Login from "../Login";
@@ -16,7 +16,9 @@ function App() {
         <Routes>
           {/* {console.log(store.getState())} */}
           {/* {store.getState().isLogin ? <Route path="/" element={<Dashboard />} exact /> : <Route path="/login" element={<Login />} />} */}
-          <Route path="/" element={<Dashboard />} exact />
+          {/* <Route path="/" element={<Dashboard />} exact> */}
+          <Route path="/" element={<Navigate replace to="/login" />} exact />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
