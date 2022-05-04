@@ -8,11 +8,15 @@ import "./App.css";
 // redux
 import { store } from "../../../config/redux";
 import { Provider } from "react-redux";
+import MyNavbar from "../../../components/molecules/MyNavbar";
 
 function App() {
   return (
     <Provider store={store}>
       <Container fluid className="register">
+        <Container>
+          <MyNavbar />
+        </Container>
         <Routes>
           {/* {console.log(store.getState())} */}
           {/* {store.getState().isLogin ? <Route path="/" element={<Dashboard />} exact /> : <Route path="/login" element={<Login />} />} */}

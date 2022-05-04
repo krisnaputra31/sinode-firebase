@@ -40,8 +40,10 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    const { uid } = JSON.parse(localStorage.getItem("userData"));
-    this.props.getNotes(uid);
+    if (JSON.parse(localStorage.getItem("userData")) !== null) {
+      const { uid } = JSON.parse(localStorage.getItem("userData"));
+      this.props.getNotes(uid);
+    }
   }
 
   updateNote = (note) => {
@@ -73,7 +75,6 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    localStorage.setItem("userData", JSON.stringify({ uid: "string" }));
     const { title, content, textButton } = this.state;
     const { notes } = this.props;
     const { updateNote, onInputChange, handleSavedNotes, cancelUpdate, deleteNote } = this;

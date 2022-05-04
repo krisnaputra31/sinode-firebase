@@ -75,7 +75,7 @@ export const getDataFromApi = (uid) => (dispatch) => {
   return new Promise((resolve, reject) => {
     onValue(starCountRef, (snapshot) => {
       const data = [];
-      if (snapshot.val() !== null) {
+      if (snapshot.val() !== null && uid !== "string") {
         Object.keys(snapshot.val()).map((key) => {
           data.push({
             id: key,

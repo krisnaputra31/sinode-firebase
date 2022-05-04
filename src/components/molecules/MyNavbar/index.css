@@ -1,0 +1,8 @@
+.this-link {
+  text-decoration: none;
+  display: block;
+}
+
+.no-pad a {
+  padding: 0;
+}
